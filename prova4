@@ -29,7 +29,7 @@ while True:
       err = 320 - cX
       err_acumulat += err
       HAL.setV(4)
-      HAL.setW(0.0015 * err + 0.0025 * (err - err_anterior)) + (0.0035 * err_acumulat)
+      HAL.setW(0.005 * err + 0.001 * (err - err_anterior)) + (0.00000005 * err_acumulat)
       err_anterior = err
 
     GUI.showImage(red_mask)
