@@ -5,6 +5,7 @@ import cv2
 i = 0
 err_anterior = 0
 err_acumulat = 0
+MAX_W = 0.5
 while True:
     img = HAL.getImage()
    
@@ -25,12 +26,20 @@ while True:
     else:
       cX, cY = 0, 0
 
-    if cX > 0:
-      err = 320 - cX
-      err_acumulat += err
-      HAL.setV(4)
-      HAL.setW(0.005 * err + 0.001 * (err - err_anterior)) + (0.00000005 * err_acumulat)
-      err_anterior = err
+if cX > 0:
+    err = 320 - cX
+    err_acumulat += err
+    HAL.setV(4)
+    
+    w = 0.005 * err + 0.002 * (err - err_anterior) + 0.000005 * err_acumulat
+    
+    if w > MAX_W:
+        w = MAX_W
+    elif w < -MAX_W:
+        w = -MAX_W
+    
+    HAL.setW(w)
+    err_anterior = err
 
     GUI.showImage(red_mask)
     print('%d cX: %.2f cY: %.2f' %(i, cX, cY))
