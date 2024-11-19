@@ -27,7 +27,7 @@ while True:
     if cX > 0:
       err = 320 - cX
       HAL.setV(4)
-      HAL.setW(0.002 * err + 0.0065 * (err - err_anterior))
+      HAL.setW(0.004 * err + 0.006 * (err - err_anterior))
       err_anterior = err
 
     GUI.showImage(red_mask)
