@@ -4,6 +4,7 @@ import cv2
 
 i = 0
 err_anterior = 0
+err_acumulat = 0
 while True:
     img = HAL.getImage()
    
@@ -23,11 +24,12 @@ while True:
       cY = M["m01"] / M["m00"]
     else:
       cX, cY = 0, 0
-     
+
     if cX > 0:
       err = 320 - cX
+      err_acumulat += err
       HAL.setV(4)
-      HAL.setW(0.01 * err + 0.0125 * (err - err_anterior))
+      HAL.setW(0.015 * err + 0.013 * (err - err_anterior))
       err_anterior = err
 
     GUI.showImage(red_mask)
