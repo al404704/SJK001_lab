@@ -1,0 +1,46 @@
+import GUI
+import HAL
+import utm
+import time
+g = 5
+a = 0.5
+
+# coords: 40º16'48.2" N ; 40º16'47.23" N
+# coords: 3º49'3.5" W ; 3º49'1.78"
+
+b_coord_n = 40 + 16/60 + 48.2/3600
+v_coord_n = 40 + 16/60 + 47.23/3600
+
+b_coord_w = -(3 + 49/60 + 3.5/3600)
+v_coord_w = -(3 + 49/60 + 1.78/3600)
+
+coords_utm_b = utm.from_latlon(b_coord_n, b_coord_w)
+coords_utm_v = utm.from_latlon(v_coord_n, v_coord_w)
+
+w = coords_utm_v[0] - coords_utm_b[0]
+n = coords_utm_v[1] - coords_utm_b[1]
+
+
+x, y, z = HAL.get_position()
+
+distancia = ((w - x)**2 + (n - y)**2)**0.5
+HAL.takeoff(g)
+
+
+while distancia > 0:
+    HAL.set_cmd_pos(w, n, g, a)
+    imgFrontal = HAL.get_frontal_image()
+    imgLateral = HAL.get_ventral_image()
+    GUI.showImage(imgFrontal)
+    GUI.showLeftImage(imgLateral)
+
+    x, y, z = HAL.get_position()
+    distancia = ((w - x)**2 + (n - y)**2)**0.5
+    print("Distancia restante: ", distancia)
+
+while True:
+    pass
+
+docker run --rm -it --device /dev/dri --gpus all -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend:latest
+
+
