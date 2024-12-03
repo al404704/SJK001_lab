@@ -45,14 +45,18 @@ import numpy as np
 num_caras = 5
 caras_encontradas = 0
 radio = 0
+pi = 3.141592
 
 def coordenadas_circunferencia(x0, y0, r):
     coordenadas_circunferencia = []
     for t in range(0, 359):
-        x = r * math.cos(t)
-        y = r * math.sin(t)
+        t = 2*pi*t/360
+        x = r * Math.cos(t)
+        y = r * Math.sin(t)
         coordenadas_circumferencia += (x, y)
     return coordenadas_circunferencia
+
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 while num_caras > caras_encontradas:
     radio += 1
@@ -102,7 +106,8 @@ while num_caras > caras_encontradas:
 
             x, y, z = HAL.get_position()
             distancia = ((w - x)**2 + (n - y)**2)**0.5
-            print(f"Ángulo {}; Radio {}", c, radio)
+            print("Ángulo: ", c)
+            print("Radio: ", radio)
             print("Distancia restante: ", distancia)
 
 
